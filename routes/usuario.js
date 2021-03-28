@@ -42,17 +42,19 @@ app.get('/', (req, res, next) => {
 // ----------------------------------
 // Crear usuario en la Base de datos
 // ----------------------------------
-app.post('/', (req,res) =>{
-    var body = req.body;
+app.post('/createUser', (req, res) => {
 
     var usuario = new Usuario({
-        nombre: body.nombre,
-        email: body.email,
-        password: bcrypt.hashSync(body.password, 10),
-        role: body.role
-    })
+        nombre: req.body.nombre,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10),
+        role: req.body.role
+    });
+
+    
 
     usuario.save((err, usuarioGuardado) => {
+
         if (err) {
             return res.status(400).json({
                 ok:false,
