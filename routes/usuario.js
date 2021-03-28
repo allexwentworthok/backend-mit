@@ -44,6 +44,7 @@ app.get('/', (req, res, next) => {
 // ----------------------------------
 app.post('/createUser', (req, res) => {
 
+    console.log('Entro',req)
     var usuario = new Usuario({
         nombre: req.body.nombre,
         email: req.body.email,
@@ -51,7 +52,8 @@ app.post('/createUser', (req, res) => {
         role: req.body.role
     });
 
-    
+    console.log('Entro',req)
+
 
     usuario.save((err, usuarioGuardado) => {
 
