@@ -72,6 +72,43 @@ app.post('/createUser', (req, res) => {
     })
 })
 
+// ----------------------------------
+// Actualiza usuario en la Base de datos
+// ----------------------------------
+
+app.post('/updateUser', (req, res, next)=>{
+    var updateValues = req.body;
+    Usuario.find({"email": req.body.email}, (err, usuarios)=>{
+        if (err){
+            return res.status(400).json({
+                ok:false,
+                mensaje: 'Error al buscar usuario para actualizar',
+                errors: err
+            })
+        }
+        if (usuarios.length == 0){
+            return res.status(400).json({
+                ok:false,
+                mensaje: 'Usuario no encontrado',
+                errors: err
+            })
+        }
+        Usuario.findByIdAndUpdate(usuarios[0].id, updateValues, function(err, usuarioGuardado) {
+            if (err) {
+                return res.status(400).json({
+                    ok:false,
+                    mensaje: 'Error al actualizar usuario',
+                    errors: err
+                })
+            }
+            res.status(200).json({
+                ok:true,
+                usuario: usuarioGuardado,
+                usuarioToken: req.usuario
+            })
+        })
+    })    
+})
 
 module.exports = app;
 
